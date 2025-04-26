@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>For You</title>
+  <style>
+    body {
+      font-family: 'Nunito', sans-serif;
+      text-align: center;
+      margin-top: 50px;
+      background: linear-gradient(to right, violet, pink);
+      color: white;
+      transition: background 1s ease;
+    }
+    h2 {
+      font-size: 28px;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 5px black;
+    }
+    button {
+      padding: 14px 28px;
+      font-size: 18px;
+      margin: 12px;
+      border-radius: 30px;
+      border: none;
+      cursor: pointer;
+      background-color: white;
+      color: violet;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+      transition: all 0.3s ease;
+    }
+    button:hover {
+      background-color: pink;
+      color: white;
+      transform: scale(1.05);
+    }
+    #response {
+      margin-top: 30px;
+      font-size: 27px;
+      color: white;
+      white-space: pre-wrap;
+      text-shadow: 2px 2px 3px black;
+    }
+    .romantic-background {
+      animation: pulseBackground 3s infinite alternate;
+    }
+    @keyframes pulseBackground {
+      0% {
+        background: linear-gradient(black);
+      }
+      100% {
+        background: linear-gradient(black);
+      }
+    }
+    #content {
+      position: relative;
+      display: inline-block;
+      padding: 40px;
+      border: 5px solid white; /* White border added */
+      border-radius: 20px; /* Rounded corners */
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+      
+    }
+    #canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+  </style>
+</head>
+<body>
+
+<div id="content">
+  <h2>Hi baby, do you want to see my message? (pls click yes🥺🥺)</h2>
+  <button onclick="showMessage('yes')">Yes</button>
+  <button onclick="showMessage('no')">No</button>
+
+  <p id="response"></p>
+</div>
+
+<!-- Sweet Sound -->
+<audio id="yesSound">
+  <source src="https://on.soundcloud.com/cuPVCrZ9MP4RpHuG7" type="audio/mpeg">
+</audio>
+
+<canvas id="canvas"></canvas>
+
+<script>
+// Heart animation logic
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+var hearts = [];
+
+function Heart() {
+  this.x = Math.random() * canvas.width;
+  this.y = Math.random() * canvas.height;
+  this.size = Math.random() * 20 + 10;
+  this.speed = Math.random() * 2 + 0.5;
+  this.opacity = Math.random() * 0.5 + 0.5;
+  this.color = "rgba(255,105,180," + this.opacity + ")";
+ 
+}
+
+function Heart() {
+  this.x = Math.random() * canvas.width;
+  this.y = Math.random() * canvas.height;
+  this.size = Math.random() * 20 + 10;
+  this.speed = Math.random() * 2 + 0.5;
+  this.opacity = Math.random() * 0.5 + 0.5;
+
+  // Randomly pick one of the three colors
+  var colors = [
+    "rgba(238,130,238," + this.opacity + ")", // violet
+    "rgba(255,105,180," + this.opacity + ")", // pink
+    "rgba(255,0,0," + this.opacity + ")"      // red
+  ];
+  this.color = colors[Math.floor(Math.random() * colors.length)];
+}
+
+
+function drawHeart(x, y, size, color) {
+  ctx.save();
+  ctx.beginPath();
+  ctx.translate(x, y);
+  ctx.moveTo(0, 0);
+  ctx.bezierCurveTo(0, -size / 2, -size, -size / 2, -size, 0);
+  ctx.bezierCurveTo(-size, size, 0, size * 1.5, 0, size * 2);
+  ctx.bezierCurveTo(0, size * 1.5, size, size, size, 0);
+  ctx.bezierCurveTo(size, -size / 2, 0, -size / 2, 0, 0);
+  ctx.closePath();
+  ctx.fillStyle = color;
+  ctx.fill();
+  ctx.restore();
+}
+
+function animateHearts() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  hearts.forEach(function (h) {
+    drawHeart(h.x, h.y, h.size, h.color);
+    h.y -= h.speed;
+    if (h.y < -50) {
+      h.y = canvas.height + 50;
+      h.x = Math.random() * canvas.width;
+    }
+  });
+  requestAnimationFrame(animateHearts);
+}
+
+// Show message and start heart animation
+function showMessage(answer) {
+  var message = "";
+  var response = document.getElementById("response");
+  var sound = document.getElementById("yesSound");
+  document.body.classList.remove("romantic-background");
+  response.innerText = "";
+
+  if (answer === 'yes') {
+    message = "Hi Ria, My copal, My baby, My gorgeous girl. Happy 4th week baby, thankyousomuchhhh dahil hindi ka nagsasawa sakin, hindi ka na bobored, the time you give me, the effort the you giving to me, and thankyouuu dahil the way who you are it really mean to me babyy... Sorry sa mga nagagaawa ko at naiinis ka... Forgive me n I won't do it again... Baby i want to know more about you what you you love what you hate, i want to know that all so don't get tired of me huh? And don't worry baby my heart is all yours mo one get my attention like the way I'm to youu. If you have any problem I'll be good listener but sorry if I'm not good into words. Ang galing mo this week you did well baby, magaling ks naman lagi but u survive this hell week so proud of you my baby👏👏👏, keep going baby I'm always at your back to be your no.1 supporter, galing galing talag baby ko... Sunod na ung iba baby hahahaah. Ulit i just want to thankyou and tell you that i really loveyou. Iloveyousomuch baby ria, happy 4th week baby!!! ";
+    document.body.classList.add("romantic-background");
+    sound.play();
+
+    // Start heart animation
+    for (var i = 0; i < 100; i++) {
+      hearts.push(new Heart());
+    }
+    animateHearts(); // Start animation
+  } else {
+    message = "wat da pak ka talaga... Awit talaga sayo pinundot mo talaga😕💔💔";
+  }
+
+  var i = 0;
+  function typeLetter() {
+    if (i < message.length) {
+      response.innerText += message.charAt(i);
+      i++;
+      setTimeout(typeLetter, 50);
+    }
+  }
+  typeLetter();
+}
+</script>
+
+</body>
+</html>
